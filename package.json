@@ -1,0 +1,27 @@
+{
+  "name": "gugichat-backend",
+  "version": "1.0.0",
+  "description": "NodeJS Backend for GugiChat",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node index.js"
+  },
+  "author": "Arko Chatterjee",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security",
+    "mongoose": "^6.3.3",
+    "router": "^1.3.7",
+    "socket.io": "^4.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
