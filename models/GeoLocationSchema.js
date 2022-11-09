@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const locationSchema = new mongoose.Schema({
     user_name: String,
+    email_address: String,
     user_id: String,
     location: {
         type: {

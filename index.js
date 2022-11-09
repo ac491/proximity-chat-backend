@@ -26,9 +26,10 @@ io.on('connection', function(socket) {
     //Add the socket to dictionary
     sockets[socket.id] = socket;
 
-    socket.on('login', ({user_name, latitude, longitude, dist}) => {
+    socket.on('login', ({user_name, email_address, latitude, longitude, dist}) => {
         const location = new Location({
             user_name: user_name,
+            email_address: email_address,
             user_id: socket.id,
             location: {
                 "type": "Point",
@@ -56,8 +57,8 @@ io.on('connection', function(socket) {
                 console.log(location);
                 if(location.length > 0) {
                     let loc = location[0];
-                    io.to(loc.user_id).emit('match', {'matched_with':user_name, room_id: loc.user_id + socket.id});
-                    io.to(socket.id).emit('match', {'matched_with':loc.user_name, room_id: loc.user_id + socket.id});
+                    io.to(loc.user_id).emit('match', {'matched_with':user_name, matched_with_email:email_address, room_id: loc.user_id + socket.id});
+                    io.to(socket.id).emit('match', {'matched_with':loc.user_name, matched_with_email:loc.email_address, room_id: loc.user_id + socket.id});
 
                     //add the users to rooms
                     socket.join(loc.user_id + socket.id);
@@ -75,6 +76,10 @@ io.on('connection', function(socket) {
         }).catch(err => {
             console.log(err);
         });
+    })
+
+    socket.on('add_to_room', (room) => {
+        socket.join(room);
     })
 
     socket.on('chat', ({data, room}) => {
