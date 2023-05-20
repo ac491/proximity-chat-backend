@@ -3,6 +3,7 @@ const router = express.Router();
 const locationController = require('../controllers/locationController');
 const requestController = require('../controllers/requestController');
 const messageController = require('../controllers/messageController');
+const notificationController = require('../controllers/notificationController');
 
 let routes = app => {
 
@@ -54,6 +55,15 @@ let routes = app => {
     router.post("/listMessages", (req, res) => {
         try {
             messageController.listMessages(req, res);
+        } catch(err) {
+            console.log(err);
+            res.status(500).send({"success":false, "message": "Error occurred while accepting request", "data": []})
+        }
+    });
+
+    router.post("/sendNotification", (req, res) => {
+        try {
+            notificationController.sendNotification(req, res);
         } catch(err) {
             console.log(err);
             res.status(500).send({"success":false, "message": "Error occurred while accepting request", "data": []})

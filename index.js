@@ -49,7 +49,7 @@ io.on('connection', function(socket) {
                        type: "Point" ,
                        coordinates: [longitude , latitude],
                     },
-                    $maxDistance: 1000000
+                    $maxDistance: dist
                   }
                 },
                 "user_id": { $ne: socket.id } 
@@ -79,17 +79,22 @@ io.on('connection', function(socket) {
     })
 
     socket.on('add_to_room', (room) => {
+        console.log('User joined the persistent chat room');
         socket.join(room);
     })
 
     socket.on('chat', ({data, room}) => {
         data['room'] = room;
         const message = new Message(data);
+        console.log('Message data object -----', data)
         message.save().then(()=>{
             console.log('Message successfully saved!')
             Message.find({"room": room}).then(messages => {
+                console.log('All message')
                 socket.broadcast.to(room).emit('chat', messages);
             })
+        }).catch(err=> {
+            console.log(err);
         })
     })
 

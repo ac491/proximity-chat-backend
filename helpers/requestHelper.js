@@ -51,7 +51,12 @@ module.exports = {
                 await friendList2.save();
             }
 
-            let requests = await Request.find({$or:[{'owner_email':firstUserRequestObj.email_address}, {'owner_email':secondUserRequestObj.email_address}]});
+            let requests = await Request.find(
+                {$or:[
+                    {$and: [{'owner_email':firstUserRequestObj.email_address},{'email_address':secondUserRequestObj.email_address}]},
+                    {$and: [{'owner_email':secondUserRequestObj.email_address},{'email_address':firstUserRequestObj.email_address}]}
+                ]}
+                );
             for(const request of requests){
                 request.isMatched = true;
                 await request.save();
